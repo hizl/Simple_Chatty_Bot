@@ -46,6 +46,16 @@ public interface Output {
   public void outFormat(String format, Object... args);
 }
 
+public class Converter {
+  public static int[] stringToInt(String[] rawNumbers) {
+    int[] numbers = new int[rawNumbers.length];
+    for (int i = 0; i < numbers.length; i++) {
+      numbers[i] = Integer.parseInt(rawNumbers[i]);
+    }
+    return numbers;
+  }
+}
+
 public class SimpleBot {
     private String name;
     private String birthYear;
@@ -62,24 +72,38 @@ public class SimpleBot {
     }
 
     protected void greet() {
-        this.output.outLine("Hello! My name is " + this.name + ".");
-        this.output.outLine("I was created in " + this.birthYear + ".");
-        this.output.outLine("Please, remind me your name.");
+        String format = "Hello! My name is %s.\n";
+        format += "I was created in %s.\n";
+        format += "Please, remind me your name.\n"; 
+
+        this.output.outFormat(
+          format,
+          this.name,
+          this.birthYear
+        );
     }
 
     protected void remindName() {
         String name = this.input.nextLine();
-        this.output.outLine("What a great name you have, " + name + "!");
+        this.output.outFormat(
+          "What a great name you have, %s!\n",
+          name
+        );
     }
 
     protected void guessAge() {
-        this.output.outLine("Let me guess your age.");
-        this.output.outLine("Say me remainders of dividing your age by 3, 5 and 7.");
-        int rem3 = this.input.nextInt();
-        int rem5 = this.input.nextInt();
-        int rem7 = this.input.nextInt();
-        int age = (rem3 * 70 + rem5 * 21 + rem7 * 15) % 105;
-        this.output.outLine("Your age is " + age + "; that's a good time to start programming!");
+        this.output.outLine(
+          "Let me guess your age.\n" +
+          "Say me remainders of dividing your age by 3, 5 and 7. Separate them with space"
+        );
+
+        String line = this.input.nextLine();
+        int[] remainders = Converter.stringToInt(
+          line.split(" ", 3)
+        );
+        
+        int age = (remainders[0] * 70 + remainders[1] * 21 + remainders[2] * 15) % 105;
+        this.output.outFormat("Your age is %d; that's a good time to start programming!", age);
     }
 
     protected void count() {
