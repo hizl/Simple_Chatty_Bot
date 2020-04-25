@@ -48,31 +48,23 @@ public class SimpleBot {
         System.out.println("Let's test your programming knowledge.");
 
         System.out.println("Which of the following operators is used to allocate memory to an array?");
-        String answ1 = ".create";
-        String answ2 = ".aloc";
-        String answ3 = ".new";
-        String answ4 = ".array";
 
-        int num1 = 1;
-        int num2 = 2;
-        int num3 = 3;
-        int num4 = 4;
+        while (true) {
+            System.out.println("new");
+            System.out.println("create");
+            System.out.println("get");
+            System.out.println("add");
+            int input = scanner.nextInt();
 
-        System.out.println(num1 + answ1 + "\n" + num2 + answ2 + "\n" + num3 + answ3 + "\n" + num4 + answ4);
-        int number;
-
-
-        do {
-            number = scanner.nextInt();
-            {
+            if (input == 1) {
+                break;
+            } else {
                 System.out.println("Please, try again.");
             }
 
-
-        } while (number != 3);
+        }
 
     }
-
 
     static void end() {
         System.out.println("Congratulations, have a nice day!"); // Do not change this text
