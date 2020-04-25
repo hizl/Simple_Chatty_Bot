@@ -4,56 +4,97 @@ import java.util.Scanner;
 
 public class Program {
   public static void main(String[] args) {
-    SimpleBot bot = new SimpleBot("Alice", "1998");
+    SimpleBot bot = new SimpleBot(
+      "Alice", 
+      "1998",
+      new ConsoleInput(),
+      new ConsoleOutput()
+    );
     bot.run();
   }
+}
+
+public class ConsoleInput implements Input {
+  private Scanner scanner = new Scanner(System.in);
+
+  public String nextLine() {
+    return this.scanner.nextLine();
+  };
+
+  public int nextInt() {
+    return this.scanner.nextInt();
+  };
+}
+
+public class ConsoleOutput implements Output {
+  public void outLine(String message) {
+    System.out.println(message);
+  };
+
+  public void outFormat(String format, Object... args) {
+    System.out.printf(format, args);
+  };
+}
+
+public interface Input {
+  public String nextLine();
+  public int nextInt();
+}
+
+public interface Output {
+  public void outLine(String message);
+  public void outFormat(String format, Object... args);
 }
 
 public class SimpleBot {
     private String name;
     private String birthYear;
-    
+    private Input input;
+    private Output output;
+
     final static Scanner scanner = new Scanner(System.in); // Do not change this line
 
-    public SimpleBot(String name, String birthYear) {
+    public SimpleBot(String name, String birthYear, Input input, Output output) {
       this.name = name;
       this.birthYear = birthYear;
+      this.input = input;
+      this.output = output;
     }
 
     protected void greet() {
-        System.out.println("Hello! My name is " + this.name + ".");
-        System.out.println("I was created in " + this.birthYear + ".");
-        System.out.println("Please, remind me your name.");
+        this.output.outLine("Hello! My name is " + this.name + ".");
+        this.output.outLine("I was created in " + this.birthYear + ".");
+        this.output.outLine("Please, remind me your name.");
     }
 
     protected void remindName() {
-        String name = scanner.nextLine();
-        System.out.println("What a great name you have, " + name + "!");
+        String name = this.input.nextLine();
+        this.output.outLine("What a great name you have, " + name + "!");
     }
 
     protected void guessAge() {
-        System.out.println("Let me guess your age.");
-        System.out.println("Say me remainders of dividing your age by 3, 5 and 7.");
-        int rem3 = scanner.nextInt();
-        int rem5 = scanner.nextInt();
-        int rem7 = scanner.nextInt();
+        this.output.outLine("Let me guess your age.");
+        this.output.outLine("Say me remainders of dividing your age by 3, 5 and 7.");
+        int rem3 = this.input.nextInt();
+        int rem5 = this.input.nextInt();
+        int rem7 = this.input.nextInt();
         int age = (rem3 * 70 + rem5 * 21 + rem7 * 15) % 105;
-        System.out.println("Your age is " + age + "; that's a good time to start programming!");
+        this.output.outLine("Your age is " + age + "; that's a good time to start programming!");
     }
 
     protected void count() {
-        System.out.println("Now I will prove to you that I can count to any number you want.");
-        int num = scanner.nextInt();
+        this.output.outLine("Now I will prove to you that I can count to any number you want.");
+        int num = this.input.nextInt();
         for (int i = 0; i <= num; i++) {
-            System.out.printf("%d!\n", i);
+            this.output.outFormat("%d!\n", i);
         }
     }
 
 
     protected void test() {
-        System.out.println("Let's test your programming knowledge.");
+        this.output.outLine("Let's test your programming knowledge.");
 
-        System.out.println("Which of the following operators is used to allocate memory to an array?");
+        this.output.outLine("Which of the following operators is used to allocate memory to an array?");
         String answ1 = ".create";
         String answ2 = ".aloc";
         String answ3 = ".new";
@@ -64,14 +105,14 @@ public class SimpleBot {
         int num3 = 3;
         int num4 = 4;
 
-        System.out.println(num1 + answ1 + "\n" + num2 + answ2 + "\n" + num3 + answ3 + "\n" + num4 + answ4);
+        this.output.outLine(num1 + answ1 + "\n" + num2 + answ2 + "\n" + num3 + answ3 + "\n" + num4 + answ4);
         int number;
 
 
         do {
-            number = scanner.nextInt();
+            number = this.input.nextInt();
             {
-                System.out.println("Please, try again.");
+                this.output.outLine("Please, try again.");
             }
 
 
@@ -81,7 +122,7 @@ public class SimpleBot {
 
 
     protected void end() {
-        System.out.println("Congratulations, have a nice day!"); // Do not change this text
+        this.output.outLine("Congratulations, have a nice day!"); // Do not change this text
     }
 
     public void run() {
