@@ -1,0 +1,2 @@
+language = "java10"
+run = "java SimpleChattyBot/task/src/bot/Program.java"
